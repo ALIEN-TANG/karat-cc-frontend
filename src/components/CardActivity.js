@@ -1,8 +1,14 @@
 import React from "react";
 import styled from "@emotion/styled";
 
+import { H2 } from "components/lib/typography";
+
 function CardActivity() {
-  return <Container></Container>;
+  return (
+    <Container>
+      <H2>Activity</H2>
+    </Container>
+  );
 }
 
 const Container = styled.div`
