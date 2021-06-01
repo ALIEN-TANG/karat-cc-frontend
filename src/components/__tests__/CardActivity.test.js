@@ -38,7 +38,7 @@ test(`renders transactions in table`, async () => {
   expect(thirdRow).toBeInTheDocument();
 });
 
-test(`renders error message when card activity`, async () => {
+test(`renders error message on card activity fetch error`, async () => {
   const cardId = getUserCardId();
 
   server.use(
