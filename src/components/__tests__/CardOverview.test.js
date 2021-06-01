@@ -36,27 +36,42 @@ test(`renders card metrics`, async () => {
   expect(averageTransaction).toBeInTheDocument();
 });
 
-/**
-    TODO: Debug request handler override
-    Expected: mock server returns 500 server error; error text rendered
-    Received: mock server returns default 200 response
-    Usage examples: 
-     - https://mswjs.io/docs/api/setup-server/use
-     - https://testing-library.com/docs/react-testing-library/example-intro
- */
-xtest(`renders error text`, async () => {
+test(`renders error text when card details error`, async () => {
   const cardId = getUserCardId();
   server.use(
-    rest.get(`api/card/${cardId}`, (req, res, ctx) => {
-      return res.once(
-        ctx.status(500),
-        ctx.json({ error: { message: "Server Error." } })
-      );
-    })
+    rest.get(
+      `${process.env.REACT_APP_API_URL}api/card/${cardId}`,
+      (req, res, ctx) => {
+        return res.once(
+          ctx.status(500),
+          ctx.json({ error: { message: "Server Error." } })
+        );
+      }
+    )
   );
   renderWithContextProviders(<CardOverview />, {});
   const errorMessages = await waitFor(() =>
     screen.getAllByText("card details errored")
+  );
+  expect(errorMessages).toHaveLength(2);
+});
+
+test(`renders error text when card metrics error`, async () => {
+  const cardId = getUserCardId();
+  server.use(
+    rest.get(
+      `${process.env.REACT_APP_API_URL}api/card/${cardId}/metrics`,
+      (req, res, ctx) => {
+        return res.once(
+          ctx.status(500),
+          ctx.json({ error: { message: "Server Error." } })
+        );
+      }
+    )
+  );
+  renderWithContextProviders(<CardOverview />, {});
+  const errorMessages = await waitFor(() =>
+    screen.getAllByText("card metrics errored")
   );
   expect(errorMessages).toHaveLength(2);
 });

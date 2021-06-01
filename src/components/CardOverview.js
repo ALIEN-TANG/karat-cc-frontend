@@ -16,12 +16,12 @@ function CardOverview() {
     data: card,
     isLoading: loadingDetails,
     isError: detailsErrored,
-  } = useQuery("CardDetails", () => getCardDetails(cardId));
+  } = useQuery("CardDetails", () => getCardDetails(cardId), { retry: false });
   const {
     data: metrics,
     isLoading: loadingMetrics,
     isError: metricsErrored,
-  } = useQuery("CardMetrics", () => getCardMetrics(cardId));
+  } = useQuery("CardMetrics", () => getCardMetrics(cardId), { retry: false });
 
   return (
     <Container>

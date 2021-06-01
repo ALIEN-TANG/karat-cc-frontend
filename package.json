@@ -43,6 +43,7 @@
     ]
   },
   "devDependencies": {
-    "msw": "^0.29.0"
+    "msw": "^0.29.0",
+    "react-app-polyfill": "^2.0.0"
   }
 }
