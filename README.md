@@ -4,7 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Design Questions
 
-- How else might you have improved your solution given more time?
+### How else might you have improved your solution given more time?
 
 (These responses are numbered based on my perception of their priority.)
 
@@ -16,7 +16,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 4. I chose not to use Typescript for this project, because at my current level of familiarity, it would have added non-neglible development time. In a larger, more collaborative development setting where the upfront work might save others' time and avoid a whole class of bugs, I would have considered using Typescript.
 
-- Feedback and Calibration
+### Feedback and Calibration
 
   - Approximately how many hours did you spend on this challenge?
 
