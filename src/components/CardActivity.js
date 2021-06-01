@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import styled from "@emotion/styled";
 import { useQuery } from "react-query";
-import { useTable } from "react-table";
+import { useTable, useSortBy } from "react-table";
 
 import { getCardActivity } from "api/card";
 import { H2 } from "components/lib/typography";
@@ -42,17 +42,25 @@ export default CardActivity;
 
 function Table({ columns, data }) {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({
-      columns,
-      data,
-    });
+    useTable(
+      {
+        columns,
+        data,
+      },
+      useSortBy
+    );
   return (
     <table {...getTableProps()}>
       <thead>
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+              <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                {column.render("Header")}
+                <span>
+                  {column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}
+                </span>
+              </th>
             ))}
           </tr>
         ))}
