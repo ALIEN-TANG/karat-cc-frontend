@@ -16,6 +16,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 4. I chose not to use Typescript for this project, because at my current level of familiarity, it would have added non-neglible development time. In a larger, more collaborative development setting where the upfront work might save others' time and avoid a whole class of bugs, I would have considered using Typescript.
 
+5. UI thing - if there's a lot more transactions, adding pagination would benefit the UX and allow for some more optimization in how and when we fetch that data.
+
 ### Feedback and Calibration
 
   - Approximately how many hours did you spend on this challenge?
