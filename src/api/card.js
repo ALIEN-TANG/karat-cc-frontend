@@ -11,3 +11,7 @@ export function getCardMetrics(cardId) {
     method: "GET",
   });
 }
+
+export function getCardActivity(cardId) {
+  return client(`api/card/${cardId}/activity`, { method: "GET" });
+}
