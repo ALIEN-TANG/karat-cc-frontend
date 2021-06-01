@@ -9,6 +9,7 @@ import {
   useGlobalFilter,
 } from "react-table";
 import { matchSorter } from "match-sorter";
+import moment from "moment";
 
 import { getCardActivity } from "api/card";
 import { H2 } from "components/lib/typography";
@@ -21,12 +22,24 @@ function CardActivity() {
     isLoading,
     isError,
   } = useQuery("CardActivity", () => getCardActivity(cardId));
-  const data = useMemo(() => transactions, [transactions]);
+  const data = useMemo(
+    () =>
+      transactions &&
+      transactions.length &&
+      transactions.map((transaction) => {
+        return {
+          ...transaction,
+          created_at: moment(transaction.created_at).format("YYYY-MM-DD"),
+        };
+      }),
+    [transactions]
+  );
   const columns = useMemo(
     () => [
       { Header: "Merchant", accessor: "merchant" },
       { Header: "Category", accessor: "category" },
       { Header: "Amount", accessor: "amount" },
+      { Header: "Status", accessor: "status" },
       { Header: "Date", accessor: "created_at" },
     ],
     []
@@ -94,7 +107,13 @@ function Table({ columns, data }) {
         globalFilter={state.globalFilter}
         setGlobalFilter={setGlobalFilter}
       />
-      <table {...getTableProps()} style={{ width: "100%", textAlign: "left" }}>
+      <table
+        {...getTableProps()}
+        style={{
+          width: "100%",
+          textAlign: "left",
+        }}
+      >
         <thead style={{ height: "80px", boxSizing: "content-box" }}>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
@@ -143,6 +162,31 @@ const TableContainer = styled.div`
   width: 1000px;
   margin: 0 auto;
   overflow: scroll;
+  padding: 24px;
+
+  table {
+    border-spacing: 0;
+    border: 1px solid black;
+    tr {
+      :last-child {
+        td {
+          border-bottom: 0;
+        }
+      }
+    }
+
+    th,
+    td {
+      margin: 0;
+      padding: 0.5rem;
+      border-bottom: 1px solid black;
+      border-right: 1px solid black;
+
+      :last-child {
+        border-right: 0;
+      }
+    }
+  }
 `;
 
 function GlobalFilter({
@@ -161,6 +205,7 @@ function GlobalFilter({
       style={{
         display: "flex",
         alignItems: "flex-end",
+        marginBottom: "18px",
       }}
     >
       Global Search:
