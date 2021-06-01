@@ -4,18 +4,25 @@ import { useQuery } from "react-query";
 
 import { getCardDetails, getCardMetrics } from "api/card";
 import { H2 } from "components/lib/typography";
+import { formatCurrency } from "utils/formatting";
 
 const CARD_ID = "9dfb831e-9003-490b-8076-1e5c261da921";
+export function getUserCardId() {
+  return CARD_ID;
+}
 function CardOverview() {
-  const cardId = CARD_ID;
-  const { data: card, isLoading: loadingDetails } = useQuery(
-    "CardDetails",
-    () => getCardDetails(cardId)
-  );
-  const { data: metrics, isLoading: loadingMetrics } = useQuery(
-    "CardMetrics",
-    () => getCardMetrics(cardId)
-  );
+  const cardId = getUserCardId();
+  const {
+    data: card,
+    isLoading: loadingDetails,
+    isError: detailsErrored,
+  } = useQuery("CardDetails", () => getCardDetails(cardId));
+  const {
+    data: metrics,
+    isLoading: loadingMetrics,
+    isError: metricsErrored,
+  } = useQuery("CardMetrics", () => getCardMetrics(cardId));
+
   return (
     <Container>
       <Details>
@@ -23,12 +30,24 @@ function CardOverview() {
         <Row>
           <Label>Card No.</Label>
           ...
-          <Detail>{loadingDetails ? "loading..." : card.last_four}</Detail>
+          <Detail>
+            {loadingDetails
+              ? "loading..."
+              : detailsErrored
+              ? "card details errored"
+              : card.last_four}
+          </Detail>
         </Row>
         <Row>
           <Label>Spending Limit</Label>
           ...
-          <Detail>{loadingDetails ? "loading..." : card.spending_limit}</Detail>
+          <Detail>
+            {loadingDetails
+              ? "loading..."
+              : detailsErrored
+              ? "card details errored"
+              : formatCurrency(card.spending_limit)}
+          </Detail>
         </Row>
       </Details>
       <Metrics>
@@ -36,7 +55,13 @@ function CardOverview() {
         <Row>
           <Label>Total Spend</Label>
           ...
-          <Detail>{loadingMetrics ? "loading..." : metrics.total_spend}</Detail>
+          <Detail>
+            {loadingMetrics
+              ? "loading..."
+              : metricsErrored
+              ? "card metrics errored"
+              : formatCurrency(metrics.total_spend)}
+          </Detail>
         </Row>
         <Row>
           <Label>Average Transaction</Label>
@@ -44,7 +69,9 @@ function CardOverview() {
           <Detail>
             {loadingMetrics
               ? "loading..."
-              : metrics.average_transaction.toFixed(2)}
+              : metricsErrored
+              ? "card metrics errored"
+              : formatCurrency(metrics.average_transaction)}
           </Detail>
         </Row>
       </Metrics>

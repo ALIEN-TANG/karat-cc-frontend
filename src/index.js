@@ -6,7 +6,7 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-import Themer from "context/theme-provider";
+import Themer from "context/Themer";
 
 const queryClient = new QueryClient();
 ReactDOM.render(
